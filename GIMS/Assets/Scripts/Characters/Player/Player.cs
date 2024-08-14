@@ -2,12 +2,16 @@ using UnityEngine;
 
 namespace GIMS
 {
+  [RequireComponent(typeof(PlayerInput))]
   public class Player : MonoBehaviour
   {
+    public PlayerInput Input { get; private set; }
     private PlayerMovementStateMachine movementStateMachine;
 
     private void Awake()
     {
+      Input = GetComponent<PlayerInput>();
+
       movementStateMachine = new PlayerMovementStateMachine();
     }
 
