@@ -4,8 +4,10 @@ using UnityEngine;
 
 namespace GIMS
 {
-    public class PlayerSprintingState : PlayerMovementState
+  public class PlayerSprintingState : PlayerMovementState
+  {
+    public PlayerSprintingState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
     {
-        
     }
+  }
 }
