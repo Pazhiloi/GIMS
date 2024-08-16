@@ -67,8 +67,6 @@ namespace GIMS
       stateMachine.Player.Rigidbody.AddForce(movementDirection * movementSpeed - currentPlayerHorizontalVelocity, ForceMode.VelocityChange);
     }
 
-
-
     #endregion
 
     #region  Reusable Methods
