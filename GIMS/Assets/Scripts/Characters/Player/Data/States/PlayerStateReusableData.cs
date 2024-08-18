@@ -1,0 +1,44 @@
+using UnityEngine;
+
+namespace GIMS
+{
+  public class PlayerStateReusableData : MonoBehaviour
+  {
+    public Vector2 MovementInput { get; set; }
+    public float MovementSpeedModifier { get; set; } = 1f;
+
+    public bool ShouldWalk { get; set; }
+
+    private Vector3 currentTargetRotation, timeToReachTargetRotation, dampedTargetRotationCurrentVelocity, dampedTargetRotationPassedTime;
+
+    public ref Vector3 CurrentTargetRotation
+    {
+      get
+      {
+        return ref currentTargetRotation;
+      }
+    }
+    public ref Vector3 TimeToReachTargetRotation
+    {
+      get
+      {
+        return ref timeToReachTargetRotation;
+      }
+    }
+    public ref Vector3 DampedTargetRotationCurrentVelocity
+    {
+      get
+      {
+        return ref dampedTargetRotationCurrentVelocity;
+      }
+    }
+    public ref Vector3 DampedTargetRotationPassedTime
+    {
+      get
+      {
+        return ref dampedTargetRotationPassedTime;
+      }
+    }
+
+  }
+}

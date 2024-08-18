@@ -7,6 +7,7 @@ namespace GIMS
   public class PlayerMovementStateMachine : StateMachine
   {
     public Player Player { get; }
+    public PlayerStateReusableData ReusableData { get; }
     public PlayerIdlingState IdlingState { get; }
     public PlayerWalkingState WalkingState { get; }
     public PlayerRunningState RunningState { get; }
@@ -15,6 +16,9 @@ namespace GIMS
     public PlayerMovementStateMachine(Player player)
     {
       Player = player;
+      ReusableData = new PlayerStateReusableData();
+
+
 
       IdlingState = new PlayerIdlingState(this);
 
