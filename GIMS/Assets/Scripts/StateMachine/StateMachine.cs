@@ -21,5 +21,16 @@ namespace GIMS
     public void PhysicsUpdate(){
       currentState?.PhysicsUpdate();
     }
+    public void OnAnimationEnterEvent(){
+      currentState?.OnAnimationEnterEvent();
+    }
+    public void OnAnimationExitEvent(){
+      currentState?.OnAnimationExitEvent();
+    }
+    public void OnAnimationTransitionEvent(){
+      currentState?.OnAnimationTransitionEvent();
+    }
+
+
   }
 }

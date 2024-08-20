@@ -68,13 +68,19 @@ namespace GIMS
       base.AddInputActionsCallbacks();
 
       stateMachine.Player.Input.PlayerActions.Movement.canceled += OnMovementCanceled;
+
+      stateMachine.Player.Input.PlayerActions.Dash.started += OnDashStarted;
     }
+
+    
 
     protected override void RemoveInputActionsCallbacks()
     {
       base.RemoveInputActionsCallbacks();
 
       stateMachine.Player.Input.PlayerActions.Movement.canceled -= OnMovementCanceled;
+
+      stateMachine.Player.Input.PlayerActions.Dash.canceled -= OnDashStarted;
     }
 
     protected virtual void OnMove()
@@ -93,10 +99,14 @@ namespace GIMS
 
     #region  Input Methods
 
-
     protected virtual void OnMovementCanceled(InputAction.CallbackContext context)
     {
       stateMachine.ChangeState(stateMachine.IdlingState);
+    }
+
+    protected virtual void OnDashStarted(InputAction.CallbackContext context)
+    {
+      stateMachine.ChangeState(stateMachine.DashingState);
     }
     #endregion
   }
