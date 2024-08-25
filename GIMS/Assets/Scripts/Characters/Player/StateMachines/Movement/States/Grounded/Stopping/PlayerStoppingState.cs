@@ -19,6 +19,8 @@ namespace GIMS
     {
       base.PhysicsUpdate();
 
+      RotateTowardsTargetRotation();
+
       if (!IsMovingHorizontally())return;
 
       DecelerateHorizontally();

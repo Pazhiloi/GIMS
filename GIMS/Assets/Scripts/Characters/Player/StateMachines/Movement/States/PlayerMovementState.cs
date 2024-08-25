@@ -23,8 +23,12 @@ namespace GIMS
 
     private void InitializeData()
     {
-      stateMachine.ReusableData.TimeToReachTargetRotation = movementData.BaseRotationData.TargetRotationReachTime;
+
+      SetBaseRotationData();
+      
     }
+
+    
 
     #region IState Methods
 
@@ -137,6 +141,14 @@ namespace GIMS
     #endregion
 
     #region  Reusable Methods
+    protected void SetBaseRotationData()
+    {
+      stateMachine.ReusableData.RotationData = movementData.BaseRotationData;
+
+      stateMachine.ReusableData.TimeToReachTargetRotation = stateMachine.ReusableData.RotationData.TargetRotationReachTime;
+    }
+
+    
     protected Vector3 GetMovementInputDirection()
     {
       return new Vector3(stateMachine.ReusableData.MovementInput.x, 0f, stateMachine.ReusableData.MovementInput.y);
@@ -176,7 +188,7 @@ namespace GIMS
     }
 
 
-    private float UpdateTargetRotation(Vector3 direction, bool shouldConsiderCameraRotation = true)
+    protected float UpdateTargetRotation(Vector3 direction, bool shouldConsiderCameraRotation = true)
     {
       float directionAngle = GetDirectionAngle(direction);
 

@@ -42,5 +42,6 @@ namespace GIMS
       }
     }
 
+    public PlayerRotationData RotationData { get; set; }
   }
 }
