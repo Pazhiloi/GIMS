@@ -29,11 +29,10 @@ namespace GIMS
 
     public override void OnAnimationTransitionEvent()
     {
-      base.OnAnimationTransitionEvent();
 
       if (stateMachine.ReusableData.MovementInput == Vector2.zero)
       {
-        stateMachine.ChangeState(stateMachine.IdlingState);
+        stateMachine.ChangeState(stateMachine.HardStoppingState);
 
         return;
       }

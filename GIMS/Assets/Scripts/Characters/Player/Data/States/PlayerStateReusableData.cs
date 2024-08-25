@@ -7,6 +7,7 @@ namespace GIMS
     public Vector2 MovementInput { get; set; }
     public float MovementSpeedModifier { get; set; } = 1f;
     public float MovementOnSlopesSpeedModifier { get; set; } = 1f;
+    public float MovementDecelerationForce { get; set; } = 1f;
 
     public bool ShouldWalk { get; set; }
 

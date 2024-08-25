@@ -58,6 +58,11 @@ namespace GIMS
     #endregion
 
     #region  Input Methods
+
+    protected override void OnMovementCanceled(InputAction.CallbackContext context)
+    {
+      stateMachine.ChangeState(stateMachine.MediumStoppingState);
+    }
     protected override void OnWalkToggleStarted(InputAction.CallbackContext context)
     {
       base.OnWalkToggleStarted(context);

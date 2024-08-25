@@ -84,7 +84,10 @@ namespace GIMS
     #endregion
 
     #region Input Methods
-
+    protected override void OnMovementCanceled(InputAction.CallbackContext context)
+    {
+      stateMachine.ChangeState(stateMachine.HardStoppingState);
+    }
 
     private void OnSprintPerformed(InputAction.CallbackContext context)
     {
