@@ -11,12 +11,14 @@ namespace GIMS
     protected PlayerMovementStateMachine stateMachine;
 
     protected PlayerGroundedData movementData;
+    protected PlayerAirborneData airborneData;
 
     public PlayerMovementState(PlayerMovementStateMachine playerMovementStateMachine)
     {
       stateMachine = playerMovementStateMachine;
 
       movementData = stateMachine.Player.Data.GroundedData;
+      airborneData = stateMachine.Player.Data.AirborneData;
 
       InitializeData();
     }
@@ -72,6 +74,17 @@ namespace GIMS
     public virtual void OnAnimationTransitionEvent(){
 
     }
+
+    public virtual void OnTriggerEnter(Collider collider){
+      if (stateMachine.Player.LayerData.IsGroundLayer(collider.gameObject.layer))
+      {
+        OnContactWithGround(collider);
+
+        return;
+      }
+    }
+
+    
 
     #endregion
 
@@ -227,6 +240,11 @@ namespace GIMS
 
       stateMachine.Player.Rigidbody.AddForce(-playerHorizontalVelocity * stateMachine.ReusableData.MovementDecelerationForce, ForceMode.Acceleration);
     }
+    protected void DecelerateVertically(){
+      Vector3 playerVerticalVelocity = GetPlayerVerticalVelocity();
+
+      stateMachine.Player.Rigidbody.AddForce(-playerVerticalVelocity * stateMachine.ReusableData.MovementDecelerationForce, ForceMode.Acceleration);
+    }
 
     protected bool IsMovingHorizontally(float minimumMagnitude = 0.1f){
       Vector3 playerHorizontalVelocity = GetPlayerHorizontalVelocity();
@@ -234,6 +252,18 @@ namespace GIMS
       Vector2 playerHorizontalMovement = new Vector2(playerHorizontalVelocity.x, playerHorizontalVelocity.z);
 
       return playerHorizontalMovement.magnitude > minimumMagnitude;
+    }
+
+    protected bool IsMovingUp(float minimumVelocity = 0.1f){
+      return GetPlayerVerticalVelocity().y > minimumVelocity;
+    }
+    protected bool IsMovingDown(float minimumVelocity = 0.1f){
+      return GetPlayerVerticalVelocity().y < -minimumVelocity;
+    }
+
+    protected virtual void OnContactWithGround(Collider collider)
+    {
+      
     }
 
     #endregion

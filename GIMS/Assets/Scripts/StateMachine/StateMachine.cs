@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace GIMS
 {
   public abstract class StateMachine
@@ -29,6 +31,11 @@ namespace GIMS
     }
     public void OnAnimationTransitionEvent(){
       currentState?.OnAnimationTransitionEvent();
+    }
+
+    public void OnTriggerEnter(Collider collider)
+    {
+      currentState?.OnTriggerEnter(collider);
     }
 
 

@@ -10,6 +10,7 @@ namespace GIMS
     public float MovementDecelerationForce { get; set; } = 1f;
 
     public bool ShouldWalk { get; set; }
+    public bool ShouldSprint { get; set; }
 
     private Vector3 currentTargetRotation, timeToReachTargetRotation, dampedTargetRotationCurrentVelocity, dampedTargetRotationPassedTime;
 
@@ -41,6 +42,8 @@ namespace GIMS
         return ref dampedTargetRotationPassedTime;
       }
     }
+
+    public Vector3 CurrentJumpForce { get; set; }
 
     public PlayerRotationData RotationData { get; set; }
   }

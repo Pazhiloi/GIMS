@@ -14,6 +14,7 @@ namespace GIMS
     private float startTime;
 
     private bool keepSprinting;
+    private bool shouldResetSprintingState;
     public PlayerSprintingState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
     {
       sprintData = movementData.SprintData;
@@ -25,6 +26,8 @@ namespace GIMS
     {
       base.Enter();
       stateMachine.ReusableData.MovementSpeedModifier = sprintData.SpeedModifier;
+      stateMachine.ReusableData.CurrentJumpForce = airborneData.JumpData.StrongForce;
+      shouldResetSprintingState = true;
       startTime = Time.time;
     }
 
@@ -32,7 +35,12 @@ namespace GIMS
     {
       base.Exit();
 
-      keepSprinting = false;
+      if (shouldResetSprintingState)
+      {
+        keepSprinting = false;
+
+        stateMachine.ReusableData.ShouldSprint = false;
+      }
     }
 
     public override void Update()
@@ -89,9 +97,17 @@ namespace GIMS
       stateMachine.ChangeState(stateMachine.HardStoppingState);
     }
 
+    protected override void OnJumpStarted(InputAction.CallbackContext context)
+    {
+      shouldResetSprintingState = false;
+      
+      base.OnJumpStarted(context);
+    }
+
     private void OnSprintPerformed(InputAction.CallbackContext context)
     {
       keepSprinting = true;
+      stateMachine.ReusableData.ShouldSprint = true;
     }
 
     #endregion 

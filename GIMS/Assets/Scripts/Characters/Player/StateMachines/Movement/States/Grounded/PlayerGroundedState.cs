@@ -15,6 +15,14 @@ namespace GIMS
       slopeData = stateMachine.Player.ColliderUtility.SlopeData;
     }
     #region IState Methods
+
+    public override void Enter()
+    {
+      base.Enter();
+
+      UpdateShouldSprintState();
+    }
+
     public override void PhysicsUpdate()
     {
       base.PhysicsUpdate();
@@ -24,6 +32,14 @@ namespace GIMS
     #endregion
 
     #region  Main Methods
+
+    private void UpdateShouldSprintState()
+    {
+      if (!stateMachine.ReusableData.ShouldSprint) return;
+      if (stateMachine.ReusableData.MovementInput != Vector2.zero) return;
+
+      stateMachine.ReusableData.ShouldSprint = false;
+    }
     private void Float()
     {
       Vector3 capsuleColliderCenterInWorldSpace = stateMachine.Player.ColliderUtility.CapsuleColliderData.Collider.bounds.center;
@@ -70,9 +86,11 @@ namespace GIMS
       stateMachine.Player.Input.PlayerActions.Movement.canceled += OnMovementCanceled;
 
       stateMachine.Player.Input.PlayerActions.Dash.started += OnDashStarted;
+
+      stateMachine.Player.Input.PlayerActions.Jump.started += OnJumpStarted;
     }
 
-    
+   
 
     protected override void RemoveInputActionsCallbacks()
     {
@@ -81,10 +99,17 @@ namespace GIMS
       stateMachine.Player.Input.PlayerActions.Movement.canceled -= OnMovementCanceled;
 
       stateMachine.Player.Input.PlayerActions.Dash.canceled -= OnDashStarted;
+
+      stateMachine.Player.Input.PlayerActions.Jump.started -= OnJumpStarted;
     }
 
     protected virtual void OnMove()
     {
+      if (stateMachine.ReusableData.ShouldSprint)
+      {
+        stateMachine.ChangeState(stateMachine.SprintingState);
+        return;
+      }
       if (stateMachine.ReusableData.ShouldWalk)
       {
         stateMachine.ChangeState(stateMachine.WalkingState);
@@ -107,6 +132,11 @@ namespace GIMS
     protected virtual void OnDashStarted(InputAction.CallbackContext context)
     {
       stateMachine.ChangeState(stateMachine.DashingState);
+    }
+
+    protected virtual void OnJumpStarted(InputAction.CallbackContext context)
+    {
+      stateMachine.ChangeState(stateMachine.JumpingState);
     }
     #endregion
   }
