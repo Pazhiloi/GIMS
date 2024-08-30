@@ -88,6 +88,13 @@ namespace GIMS
       stateMachine.Player.Input.PlayerActions.Sprint.performed -= OnSprintPerformed;
     }
 
+    protected override void OnFall()
+    {
+      shouldResetSprintingState = false;
+      base.OnFall();
+
+    }
+
 
     #endregion
 

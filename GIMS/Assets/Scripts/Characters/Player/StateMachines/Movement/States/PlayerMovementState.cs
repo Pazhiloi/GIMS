@@ -84,7 +84,19 @@ namespace GIMS
       }
     }
 
-    
+    public void OnTriggerExit(Collider collider)
+    {
+      if (stateMachine.Player.LayerData.IsGroundLayer(collider.gameObject.layer))
+      {
+        OnContactWithGroundExited(collider);
+
+        return;
+      }
+    }
+
+   
+
+
 
     #endregion
 
@@ -225,6 +237,12 @@ namespace GIMS
       stateMachine.Player.Rigidbody.velocity = Vector3.zero;
     }
 
+    protected void ResetVerticalVelocity(){
+      Vector3 playerHorizontalVelocity = GetPlayerHorizontalVelocity();
+
+      stateMachine.Player.Rigidbody.velocity = playerHorizontalVelocity;
+    }
+
      protected virtual void AddInputActionsCallbacks()
     {
       stateMachine.Player.Input.PlayerActions.WalkToggle.started += OnWalkToggleStarted;
@@ -266,6 +284,10 @@ namespace GIMS
       
     }
 
+    protected virtual void OnContactWithGroundExited(Collider collider)
+    {
+    }
+
     #endregion
 
     #region Input Methods
@@ -274,6 +296,8 @@ namespace GIMS
     {
       stateMachine.ReusableData.ShouldWalk = !stateMachine.ReusableData.ShouldWalk;
     }
+
+    
 
     #endregion
 

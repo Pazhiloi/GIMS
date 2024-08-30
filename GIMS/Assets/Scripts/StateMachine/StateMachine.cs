@@ -37,6 +37,10 @@ namespace GIMS
     {
       currentState?.OnTriggerEnter(collider);
     }
+    public void OnTriggerExit(Collider collider)
+    {
+      currentState?.OnTriggerExit(collider);
+    }
 
 
   }
