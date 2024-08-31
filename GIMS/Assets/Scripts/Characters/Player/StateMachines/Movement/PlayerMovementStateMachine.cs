@@ -16,6 +16,9 @@ namespace GIMS
     public PlayerLightStoppingState LightStoppingState { get; }
     public PlayerMediumStoppingState MediumStoppingState { get; }
     public PlayerHardStoppingState HardStoppingState { get; }
+    public PlayerLightLandingState LightLandingState { get; }
+    public PlayerRollingState RollingState { get; }
+    public PlayerHardLandingState HardLandingState { get; }
     public PlayerJumpingState JumpingState { get; }
     public PlayerFallingState FallingState { get; }
 
@@ -38,6 +41,10 @@ namespace GIMS
       LightStoppingState = new PlayerLightStoppingState(this);
       MediumStoppingState = new PlayerMediumStoppingState(this);
       HardStoppingState = new PlayerHardStoppingState(this);
+
+      LightLandingState = new PlayerLightLandingState(this);
+      RollingState = new PlayerRollingState(this);
+      HardLandingState = new PlayerHardLandingState(this);
 
       JumpingState = new PlayerJumpingState(this);
       FallingState = new PlayerFallingState(this);
