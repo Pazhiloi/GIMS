@@ -19,14 +19,15 @@ namespace GIMS
     #region IState Methods
     public override void Enter()
     {
+      stateMachine.ReusableData.MovementSpeedModifier = dashData.SpeedModifier;
+
       base.Enter();
 
-      stateMachine.ReusableData.MovementSpeedModifier = dashData.SpeedModifier;
       stateMachine.ReusableData.CurrentJumpForce = airborneData.JumpData.StrongForce;
 
       stateMachine.ReusableData.RotationData = dashData.RotationData;
 
-      AddForceOnTransitionFromStationaryState();
+      Dash();
 
       shouldKeepRotating = stateMachine.ReusableData.MovementInput!= Vector2.zero;
 
@@ -67,17 +68,22 @@ namespace GIMS
 
 
     #region Main Methods
-    private void AddForceOnTransitionFromStationaryState()
+    private void Dash()
     {
-      if (stateMachine.ReusableData.MovementInput != Vector2.zero) return;
+      Vector3 dashDirection = stateMachine.Player.transform.forward;
 
-      Vector3 characterRotationDirection = stateMachine.Player.transform.forward;
+      dashDirection.y = 0;
 
-      characterRotationDirection.y = 0;
+      UpdateTargetRotation(dashDirection, false);
 
-      UpdateTargetRotation(characterRotationDirection, false);
+      if (stateMachine.ReusableData.MovementInput != Vector2.zero) {
 
-      stateMachine.Player.Rigidbody.velocity = characterRotationDirection * GetMovementSpeed();
+        UpdateTargetRotation(GetMovementInputDirection());
+
+        dashDirection = GetTargetRotationDirection(stateMachine.ReusableData.CurrentTargetRotation.y);
+      }
+
+      stateMachine.Player.Rigidbody.velocity = dashDirection * GetMovementSpeed(false);
     }
 
     
@@ -126,9 +132,6 @@ namespace GIMS
     #endregion
 
     #region  Input Methods
-    protected override void OnMovementCanceled(InputAction.CallbackContext context)
-    {
-    }
 
     private void OnMovementPerformed(InputAction.CallbackContext context)
     {

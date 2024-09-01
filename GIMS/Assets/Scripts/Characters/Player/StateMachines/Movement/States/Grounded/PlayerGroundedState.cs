@@ -19,6 +19,8 @@ namespace GIMS
       base.Enter();
 
       UpdateShouldSprintState();
+
+      UpdateCameraRecenteringState(stateMachine.ReusableData.MovementInput);
     }
 
     public override void PhysicsUpdate()
@@ -37,7 +39,7 @@ namespace GIMS
       BoxCollider groundCheckCollider = stateMachine.Player.ColliderUtility.TriggerColliderData.GroundCheckCollider;
       Vector3 groundColliderCenterInWorldSpace = groundCheckCollider.bounds.center;
 
-      Collider[] overlappedGroundColliders = Physics.OverlapBox(groundColliderCenterInWorldSpace, groundCheckCollider.bounds.extents, groundCheckCollider.transform.rotation, stateMachine.Player.LayerData.GroundLayer, QueryTriggerInteraction.Ignore);
+      Collider[] overlappedGroundColliders = Physics.OverlapBox(groundColliderCenterInWorldSpace, stateMachine.Player.ColliderUtility.TriggerColliderData.GroundCheckColliderVerticalExtents, groundCheckCollider.transform.rotation, stateMachine.Player.LayerData.GroundLayer, QueryTriggerInteraction.Ignore);
 
       return overlappedGroundColliders.Length > 0;
     }
@@ -80,7 +82,12 @@ namespace GIMS
     {
       float slopeSpeedModifier = movementData.SlopeSpeedAngles.Evaluate(angle);
 
-      stateMachine.ReusableData.MovementOnSlopesSpeedModifier = slopeSpeedModifier;
+      if (stateMachine.ReusableData.MovementOnSlopesSpeedModifier != slopeSpeedModifier)
+      {
+        stateMachine.ReusableData.MovementOnSlopesSpeedModifier = slopeSpeedModifier;
+
+        UpdateCameraRecenteringState(stateMachine.ReusableData.MovementInput);
+      }
 
       return slopeSpeedModifier;
     }
@@ -92,8 +99,6 @@ namespace GIMS
     {
       base.AddInputActionsCallbacks();
 
-      stateMachine.Player.Input.PlayerActions.Movement.canceled += OnMovementCanceled;
-
       stateMachine.Player.Input.PlayerActions.Dash.started += OnDashStarted;
 
       stateMachine.Player.Input.PlayerActions.Jump.started += OnJumpStarted;
@@ -104,8 +109,6 @@ namespace GIMS
     protected override void RemoveInputActionsCallbacks()
     {
       base.RemoveInputActionsCallbacks();
-
-      stateMachine.Player.Input.PlayerActions.Movement.canceled -= OnMovementCanceled;
 
       stateMachine.Player.Input.PlayerActions.Dash.canceled -= OnDashStarted;
 
@@ -157,10 +160,6 @@ namespace GIMS
 
     #region  Input Methods
 
-    protected virtual void OnMovementCanceled(InputAction.CallbackContext context)
-    {
-      stateMachine.ChangeState(stateMachine.IdlingState);
-    }
 
     protected virtual void OnDashStarted(InputAction.CallbackContext context)
     {

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace GIMS
 {
@@ -79,6 +80,8 @@ namespace GIMS
 
       if (shouldKeepRotating)
       {
+
+        UpdateTargetRotation(GetMovementInputDirection());
         jumpDirection = GetTargetRotationDirection(stateMachine.ReusableData.CurrentTargetRotation.y);
       }
 
@@ -115,6 +118,12 @@ namespace GIMS
     }
     #endregion
 
+    #region Input Methods  
+    protected override void OnMovementCanceled(InputAction.CallbackContext context)
+    {
+    }
+
+    #endregion
 
   }
 }
