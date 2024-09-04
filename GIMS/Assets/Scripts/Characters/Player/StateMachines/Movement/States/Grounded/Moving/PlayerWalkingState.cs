@@ -24,6 +24,7 @@ namespace GIMS
       stateMachine.ReusableData.BackwardsCameraRecenteringData = walkData.BackwardsCameraRecenteringData;
 
       base.Enter();
+      StartAnimation(stateMachine.Player.AnimationData.WalkParameterHash);
 
       stateMachine.ReusableData.CurrentJumpForce = airborneData.JumpData.WeakForce;
     }
@@ -31,7 +32,8 @@ namespace GIMS
     public override void Exit()
     {
       base.Exit();
-      
+      StopAnimation(stateMachine.Player.AnimationData.WalkParameterHash);
+
       SetBaseCameraRecenteringData();
     }
     #endregion

@@ -22,6 +22,7 @@ namespace GIMS
       stateMachine.ReusableData.MovementSpeedModifier = dashData.SpeedModifier;
 
       base.Enter();
+      StartAnimation(stateMachine.Player.AnimationData.DashParameterHash);
 
       stateMachine.ReusableData.CurrentJumpForce = airborneData.JumpData.StrongForce;
 
@@ -39,6 +40,7 @@ namespace GIMS
     public override void Exit()
     {
       base.Exit();
+      StopAnimation(stateMachine.Player.AnimationData.DashParameterHash);
 
       SetBaseRotationData();
     }

@@ -27,6 +27,8 @@ namespace GIMS
       stateMachine.ReusableData.MovementSpeedModifier = sprintData.SpeedModifier;
 
       base.Enter();
+      StartAnimation(stateMachine.Player.AnimationData.SprintParameterHash);
+
       stateMachine.ReusableData.CurrentJumpForce = airborneData.JumpData.StrongForce;
       shouldResetSprintingState = true;
       startTime = Time.time;
@@ -35,6 +37,7 @@ namespace GIMS
     public override void Exit()
     {
       base.Exit();
+      StopAnimation(stateMachine.Player.AnimationData.SprintParameterHash);
 
       if (shouldResetSprintingState)
       {

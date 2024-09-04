@@ -18,6 +18,7 @@ namespace GIMS
       stateMachine.ReusableData.MovementSpeedModifier = 0f;
 
       base.Enter();
+      StartAnimation(stateMachine.Player.AnimationData.HardLandParameterHash);
 
       stateMachine.Player.Input.PlayerActions.Movement.Disable();
 
@@ -27,6 +28,7 @@ namespace GIMS
     public override void Exit()
     {
       base.Exit();
+      StopAnimation(stateMachine.Player.AnimationData.HardLandParameterHash);
 
       stateMachine.Player.Input.PlayerActions.Movement.Enable();
     }

@@ -12,9 +12,12 @@ namespace GIMS
     [field: Header("Collisions")]
     [field:SerializeField] public PlayerCapsuleColliderUtility ColliderUtility { get; private set; }
     [field:SerializeField] public PlayerLayerData LayerData { get; private set; }
+    [field: Header("Animations")]
+    [field:SerializeField] public PlayerAnimationData AnimationData { get; private set; }
     [field: Header("Cameras")]
     [field:SerializeField] public PlayerCameraUtility CameraUtility { get; private set; }
     public Rigidbody Rigidbody { get; private set; }
+    public Animator Animator { get; private set; }
     public PlayerInput Input { get; private set; }
     public Transform MainCameraTransform { get; private set; }
 
@@ -23,11 +26,13 @@ namespace GIMS
     private void Awake()
     {
       Rigidbody = GetComponent<Rigidbody>();
+      Animator = GetComponentInChildren<Animator>();
       Input = GetComponent<PlayerInput>();
 
       ColliderUtility.Initialize(gameObject);
       ColliderUtility.CalculateCapsuleColliderDimensions();
       CameraUtility.Initialize();
+      AnimationData.Initialize();
 
       MainCameraTransform = Camera.main.transform;
 
@@ -62,6 +67,16 @@ namespace GIMS
     private void FixedUpdate()
     {
       movementStateMachine.PhysicsUpdate();
+    }
+
+    public void OnMovementStateAnimationEnterEvent(){
+      movementStateMachine.OnAnimationEnterEvent();
+    }
+    public void OnMovementStateAnimationExitEvent(){
+      movementStateMachine.OnAnimationExitEvent();
+    }
+    public void OnMovementStateAnimationTransitionEvent(){
+      movementStateMachine.OnAnimationTransitionEvent();
     }
   }
 }
